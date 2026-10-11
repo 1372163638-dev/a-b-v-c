@@ -5,7 +5,8 @@ const username=process.env.BETA_USERNAME||'aj123';
 const password=process.env.BETA_PASSWORD;
 if(!password||!process.env.SESSION_SECRET)throw new Error('Configure BETA_PASSWORD and SESSION_SECRET before starting');
 const salt=randomBytes(16);
-const env={BETA_USERS:JSON.stringify([{username,salt:salt.toString('base64'),hash:pbkdf2Sync(password,salt,100000,32,'sha256').toString('base64')}]),BETA_SESSION_SECRET:Buffer.from(process.env.SESSION_SECRET).toString('base64')};
+const additionalAccounts=[{"username":"aj124","salt":"c9tYLPIM0KYfGaWQGBc9uA==","hash":"cWMLg+cumNUKPp2wppLOyTeWMF9Sz6Z1upOVPicnugw="},{"username":"aj125","salt":"oFBtExDGib3QGU69noV+Zg==","hash":"xGPeLinSU+fi1LYMRNQ9Lr5pNpYTAW2FXAt1igBsLpU="}];
+const env={BETA_USERS:JSON.stringify([{username,salt:salt.toString('base64'),hash:pbkdf2Sync(password,salt,100000,32,'sha256').toString('base64')},...additionalAccounts]),BETA_SESSION_SECRET:Buffer.from(process.env.SESSION_SECRET).toString('base64')};
 const port=Number(process.env.PORT||10000);
 const origin=new URL(process.env.PUBLIC_URL||process.env.RENDER_EXTERNAL_URL||`http://localhost:${port}`).origin;
 const server=http.createServer(async(req,res)=>{
